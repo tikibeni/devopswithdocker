@@ -3,6 +3,11 @@ services:
   backend:
     build: backend/
     container_name: backend-comp
+    ports:
+      - 8080:8080
+    environment:
+      - PATH=/usr/local/go/bin:$PATH
+      - REQUEST_ORIGIN=http://localhost:5000
     command: ./server
 
   frontend:
@@ -10,4 +15,6 @@ services:
     container_name: frontend-comp
     ports:
       - 5000:5000
+    environment:
+      - REACT_APP_BACKEND_URL=http://localhost:8080
     command: ["serve", "-s", "-l", "5000", "build"]
