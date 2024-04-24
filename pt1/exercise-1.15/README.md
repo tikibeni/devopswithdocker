@@ -3,7 +3,7 @@
 To run the app you need to pull and run the [image](https://hub.docker.com/repository/docker/tikibeni/tira):
 
 ```sh
-~$ docker run -it tikibeni:tira
+~$ docker run -it tikibeni/tira:latest
 ```
 
 Then the program asks (in Finnish) for the algorithm to be used (input 1 for Wilson or 2 for Random Prim)
