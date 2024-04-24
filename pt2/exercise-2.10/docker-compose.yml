@@ -1,0 +1,51 @@
+services:
+
+  nginx:
+    image: nginx
+    restart: unless-stopped
+    container_name: nginx-comp
+    depends_on:
+      - frontend
+      - backend
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+
+  db:
+    image: postgres:13.2-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    container_name: db-comp
+    volumes:
+      - ./database:/var/lib/postgresql/data
+
+  redis:
+    image: redis:alpine
+    container_name: redis-comp
+    ports:
+    - "6379:6379"
+
+  backend:
+    build: backend/
+    container_name: backend-comp
+    depends_on:
+      - db
+      - redis
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - POSTGRES_HOST=db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DATABASE=postgres
+    command: ./server
+
+  frontend:
+    build: frontend/
+    container_name: frontend-comp
+    command: ["serve", "-s", "-l", "5000", "build"]
+
+volumes:
+  database:
