@@ -1,0 +1,44 @@
+services:
+
+  db:
+    image: postgres:13.2-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    container_name: db-comp
+    ports:
+      - 5432:5432
+
+  redis:
+    image: redis:alpine
+    container_name: redis-comp
+    ports:
+    - 6379:6379
+
+  backend:
+    build: backend/
+    container_name: backend-comp
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+      - redis
+    environment:
+      - PATH=/usr/local/go/bin:$PATH
+      - REQUEST_ORIGIN=http://localhost:5000
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - POSTGRES_HOST=db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DATABASE=postgres
+    command: ./server
+
+  frontend:
+    build: frontend/
+    container_name: frontend-comp
+    ports:
+      - 5000:5000
+    environment:
+      - REACT_APP_BACKEND_URL=http://localhost:8080
+    command: ["serve", "-s", "-l", "5000", "build"]
