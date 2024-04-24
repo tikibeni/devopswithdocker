@@ -1,3 +1,5 @@
-# DevOps with Docker placeholder
+# DevOps with Docker (University of Helsinki)
 
-UniHel Course Collection DevOps with Docker's (TKT21036, TKT21037, TKT21038) exercise submissions.
+DevOps with Docker's course collection (TKT21036, TKT21037, TKT21038) exercise submissions.
+
+[Part 1](./pt1/): 15/16 done
