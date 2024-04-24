@@ -1,0 +1,13 @@
+services:
+
+  backend:
+    build: backend/
+    container_name: backend-comp
+    command: ./server
+
+  frontend:
+    build: frontend/
+    container_name: frontend-comp
+    ports:
+      - 5000:5000
+    command: ["serve", "-s", "-l", "5000", "build"]
